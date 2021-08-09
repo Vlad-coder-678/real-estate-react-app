@@ -1,0 +1,1575 @@
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+/*! ../../../animation/utils/is-keyframes-target.js */
+
+/*! ../../../animation/utils/transitions.js */
+
+/*! ../../../components/AnimatePresence/use-presence.js */
+
+/*! ../../../components/AnimateSharedLayout/types.js */
+
+/*! ../../../context/SharedLayoutContext.js */
+
+/*! ../../../motion/features/layout/utils.js */
+
+/*! ../../../motion/utils/is-forced-motion-value.js */
+
+/*! ../../../motion/utils/valid-prop.js */
+
+/*! ../../../render/dom/projection/default-scale-correctors.js */
+
+/*! ../../../render/dom/projection/scale-correction.js */
+
+/*! ../../../render/dom/projection/utils.js */
+
+/*! ../../../render/dom/utils/batch-layout.js */
+
+/*! ../../../render/utils/compare-by-depth.js */
+
+/*! ../../../utils/each-axis.js */
+
+/*! ../../../utils/geometry/delta-apply.js */
+
+/*! ../../../utils/geometry/index.js */
+
+/*! ../../../value/utils/is-motion-value.js */
+
+/*! ../../animation/utils/is-animation-controls.js */
+
+/*! ../../animation/utils/is-keyframes-target.js */
+
+/*! ../../animation/utils/transitions.js */
+
+/*! ../../components/AnimatePresence/use-presence.js */
+
+/*! ../../context/LayoutGroupContext.js */
+
+/*! ../../context/LazyContext.js */
+
+/*! ../../context/MotionConfigContext.js */
+
+/*! ../../context/MotionContext/index.js */
+
+/*! ../../context/PresenceContext.js */
+
+/*! ../../dom/projection/scale-correction.js */
+
+/*! ../../dom/utils/camel-to-dash.js */
+
+/*! ../../dom/utils/is-css-variable.js */
+
+/*! ../../dom/value-types/get-as-type.js */
+
+/*! ../../dom/value-types/number.js */
+
+/*! ../../easing/index.js */
+
+/*! ../../events/event-info.js */
+
+/*! ../../events/use-dom-event.js */
+
+/*! ../../events/use-pointer-event.js */
+
+/*! ../../gestures/drag/use-drag.js */
+
+/*! ../../gestures/use-focus-gesture.js */
+
+/*! ../../gestures/use-hover-gesture.js */
+
+/*! ../../gestures/use-pan-gesture.js */
+
+/*! ../../gestures/use-tap-gesture.js */
+
+/*! ../../html/config-motion.js */
+
+/*! ../../html/utils/build-styles.js */
+
+/*! ../../html/utils/create-render-state.js */
+
+/*! ../../html/utils/render.js */
+
+/*! ../../html/utils/scrape-motion-values.js */
+
+/*! ../../html/utils/transform.js */
+
+/*! ../../motion/features/animations.js */
+
+/*! ../../motion/features/drag.js */
+
+/*! ../../motion/features/gestures.js */
+
+/*! ../../motion/features/layout/index.js */
+
+/*! ../../motion/features/layout/utils.js */
+
+/*! ../../motion/index.js */
+
+/*! ../../motion/utils/is-forced-motion-value.js */
+
+/*! ../../motion/utils/use-visual-state.js */
+
+/*! ../../render/dom/projection/convert-to-relative.js */
+
+/*! ../../render/dom/projection/measure.js */
+
+/*! ../../render/dom/projection/scale-correction.js */
+
+/*! ../../render/dom/projection/utils.js */
+
+/*! ../../render/dom/utils/batch-layout.js */
+
+/*! ../../render/dom/value-types/animatable-none.js */
+
+/*! ../../render/html/utils/transform.js */
+
+/*! ../../render/utils/animation-state.js */
+
+/*! ../../render/utils/is-draggable.js */
+
+/*! ../../render/utils/types.js */
+
+/*! ../../render/utils/variants.js */
+
+/*! ../../svg/config-motion.js */
+
+/*! ../../svg/lowercase-elements.js */
+
+/*! ../../utils/array.js */
+
+/*! ../../utils/clamp.js */
+
+/*! ../../utils/compare-by-depth.js */
+
+/*! ../../utils/each-axis.js */
+
+/*! ../../utils/geometry/delta-apply.js */
+
+/*! ../../utils/geometry/delta-calc.js */
+
+/*! ../../utils/geometry/index.js */
+
+/*! ../../utils/interpolate.js */
+
+/*! ../../utils/is-numerical-string.js */
+
+/*! ../../utils/is-ref-object.js */
+
+/*! ../../utils/resolve-value.js */
+
+/*! ../../utils/shallow-compare.js */
+
+/*! ../../utils/state.js */
+
+/*! ../../utils/subscription-manager.js */
+
+/*! ../../utils/time-conversion.js */
+
+/*! ../../utils/use-constant.js */
+
+/*! ../../utils/use-isomorphic-effect.js */
+
+/*! ../../value/index.js */
+
+/*! ../../value/utils/is-motion-value.js */
+
+/*! ../../value/utils/resolve-motion-value.js */
+
+/*! ../PanSession.js */
+
+/*! ../animation/utils/is-keyframes-target.js */
+
+/*! ../color/index.js */
+
+/*! ../components/AnimateSharedLayout/types.js */
+
+/*! ../components/AnimateSharedLayout/utils/batcher.js */
+
+/*! ../context/MotionConfigContext.js */
+
+/*! ../context/MotionContext/create.js */
+
+/*! ../context/MotionContext/index.js */
+
+/*! ../data/menuData */
+
+/*! ../dom/projection/measure.js */
+
+/*! ../dom/utils/camel-to-dash.js */
+
+/*! ../dom/utils/is-css-variable.js */
+
+/*! ../dom/utils/parse-dom-variant.js */
+
+/*! ../dom/value-types/animatable-none.js */
+
+/*! ../dom/value-types/defaults.js */
+
+/*! ../dom/value-types/find.js */
+
+/*! ../events/event-info.js */
+
+/*! ../events/use-dom-event.js */
+
+/*! ../events/use-pointer-event.js */
+
+/*! ../generators/decay.js */
+
+/*! ../generators/keyframes.js */
+
+/*! ../generators/spring.js */
+
+/*! ../gestures/utils/event-type.js */
+
+/*! ../html/use-props.js */
+
+/*! ../html/utils/build-projection-transform.js */
+
+/*! ../html/utils/transform.js */
+
+/*! ../html/visual-element.js */
+
+/*! ../images/bars.svg */
+
+/*! ../images/house-1.jpg */
+
+/*! ../images/house-2.jpg */
+
+/*! ../images/house-3.jpg */
+
+/*! ../images/house-4.jpg */
+
+/*! ../images/house-5.jpg */
+
+/*! ../images/interior-1.jpg */
+
+/*! ../index.js */
+
+/*! ../lib */
+
+/*! ../noop.js */
+
+/*! ../numbers/index.js */
+
+/*! ../numbers/units.js */
+
+/*! ../render/utils/types.js */
+
+/*! ../svg/use-props.js */
+
+/*! ../svg/visual-element.js */
+
+/*! ../types.js */
+
+/*! ../use-render.js */
+
+/*! ../utils.js */
+
+/*! ../utils/css-variables-conversion.js */
+
+/*! ../utils/each-axis.js */
+
+/*! ../utils/find-spring.js */
+
+/*! ../utils/geometry/delta-apply.js */
+
+/*! ../utils/geometry/delta-calc.js */
+
+/*! ../utils/geometry/index.js */
+
+/*! ../utils/interpolate.js */
+
+/*! ../utils/is-browser.js */
+
+/*! ../utils/make-renderless-component.js */
+
+/*! ../utils/setters.js */
+
+/*! ../utils/subscription-manager.js */
+
+/*! ../utils/time-conversion.js */
+
+/*! ../utils/use-unmount-effect.js */
+
+/*! ../utils/velocity-per-second.js */
+
+/*! ../value-types/dimensions.js */
+
+/*! ../value/index.js */
+
+/*! ../value/utils/is-motion-value.js */
+
+/*! ./Animate.js */
+
+/*! ./App */
+
+/*! ./Button */
+
+/*! ./Measure.js */
+
+/*! ./PanSession.js */
+
+/*! ./VisualElementDragControls.js */
+
+/*! ./animation.js */
+
+/*! ./array.js */
+
+/*! ./build-transform.js */
+
+/*! ./camel-case-attrs.js */
+
+/*! ./checkPropTypes */
+
+/*! ./cjs/react-dom.development.js */
+
+/*! ./cjs/react-is.development.js */
+
+/*! ./cjs/react.development.js */
+
+/*! ./cjs/scheduler-tracing.development.js */
+
+/*! ./cjs/scheduler.development.js */
+
+/*! ./clamp.js */
+
+/*! ./compare-by-depth.js */
+
+/*! ./components/Dropdown */
+
+/*! ./components/Hero */
+
+/*! ./components/Navbar */
+
+/*! ./components/SectionExplore */
+
+/*! ./components/SectionView */
+
+/*! ./create-render-step.js */
+
+/*! ./create-visual-element.js */
+
+/*! ./css-variables-conversion.js */
+
+/*! ./data/exploreData */
+
+/*! ./data/sliderData */
+
+/*! ./default-transitions.js */
+
+/*! ./defaults.js */
+
+/*! ./definitions.js */
+
+/*! ./dimensions.js */
+
+/*! ./dom/projection/relative-set.js */
+
+/*! ./drag/utils/lock.js */
+
+/*! ./easing.js */
+
+/*! ./event-info.js */
+
+/*! ./factoryWithTypeCheckers */
+
+/*! ./features/definitions.js */
+
+/*! ./features/use-features.js */
+
+/*! ./globalStyles */
+
+/*! ./hex.js */
+
+/*! ./hsla.js */
+
+/*! ./html/utils/build-projection-transform.js */
+
+/*! ./iconBase */
+
+/*! ./iconContext */
+
+/*! ./iconsManifest */
+
+/*! ./inc.js */
+
+/*! ./index.js */
+
+/*! ./is-animatable.js */
+
+/*! ./is-browser.js */
+
+/*! ./is-keyframes-target.js */
+
+/*! ./is-motion-value.js */
+
+/*! ./is-point-3d.js */
+
+/*! ./is-point.js */
+
+/*! ./is-svg-component.js */
+
+/*! ./lib/ReactPropTypesSecret */
+
+/*! ./mix-color.js */
+
+/*! ./mix-complex.js */
+
+/*! ./mix.js */
+
+/*! ./motion-proxy.js */
+
+/*! ./number.js */
+
+/*! ./on-next-frame.js */
+
+/*! ./path.js */
+
+/*! ./pipe.js */
+
+/*! ./progress.js */
+
+/*! ./rgba.js */
+
+/*! ./setPrototypeOf.js */
+
+/*! ./setters.js */
+
+/*! ./test.js */
+
+/*! ./transform-origin.js */
+
+/*! ./transform.js */
+
+/*! ./type-auto.js */
+
+/*! ./type-int.js */
+
+/*! ./types.js */
+
+/*! ./unit-conversion.js */
+
+/*! ./use-dom-event.js */
+
+/*! ./utils.js */
+
+/*! ./utils/animation-state.js */
+
+/*! ./utils/build-attrs.js */
+
+/*! ./utils/build-projection-transform.js */
+
+/*! ./utils/build-styles.js */
+
+/*! ./utils/camel-case-attrs.js */
+
+/*! ./utils/constraints.js */
+
+/*! ./utils/create-config.js */
+
+/*! ./utils/create-render-state.js */
+
+/*! ./utils/detect-animation-from-options.js */
+
+/*! ./utils/elapsed.js */
+
+/*! ./utils/event-type.js */
+
+/*! ./utils/filter-props.js */
+
+/*! ./utils/flat-tree.js */
+
+/*! ./utils/is-draggable.js */
+
+/*! ./utils/is-node-or-child.js */
+
+/*! ./utils/is-svg-component.js */
+
+/*! ./utils/lifecycles.js */
+
+/*! ./utils/lock.js */
+
+/*! ./utils/motion-values.js */
+
+/*! ./utils/projection.js */
+
+/*! ./utils/render.js */
+
+/*! ./utils/scrape-motion-values.js */
+
+/*! ./utils/state.js */
+
+/*! ./utils/transform.js */
+
+/*! ./utils/use-motion-ref.js */
+
+/*! ./utils/use-visual-element.js */
+
+/*! ./utils/variants.js */
+
+/*! ./variants.js */
+
+/*! @babel/runtime/helpers/esm/extends */
+
+/*! @babel/runtime/helpers/esm/inheritsLoose */
+
+/*! @babel/runtime/helpers/esm/objectWithoutPropertiesLoose */
+
+/*! @emotion/is-prop-valid */
+
+/*! @emotion/memoize */
+
+/*! @emotion/stylis */
+
+/*! @emotion/unitless */
+
+/*! framer-motion */
+
+/*! framesync */
+
+/*! hey-listen */
+
+/*! history */
+
+/*! hoist-non-react-statics */
+
+/*! isarray */
+
+/*! mini-create-react-context */
+
+/*! object-assign */
+
+/*! path-to-regexp */
+
+/*! popmotion */
+
+/*! prop-types */
+
+/*! react */
+
+/*! react-dom */
+
+/*! react-icons/fa */
+
+/*! react-icons/io */
+
+/*! react-icons/io5 */
+
+/*! react-is */
+
+/*! react-router */
+
+/*! react-router-dom */
+
+/*! resolve-pathname */
+
+/*! scheduler */
+
+/*! scheduler/tracing */
+
+/*! shallowequal */
+
+/*! style-value-types */
+
+/*! styled-components */
+
+/*! tiny-invariant */
+
+/*! tiny-warning */
+
+/*! tslib */
+
+/*! value-equal */
+
+/*!*********************!*\
+  !*** ./src/App.jsx ***!
+  \*********************/
+
+/*!***********************!*\
+  !*** ./src/index.jsx ***!
+  \***********************/
+
+/*!*****************************!*\
+  !*** ./src/globalStyles.js ***!
+  \*****************************/
+
+/*!*****************************!*\
+  !*** ./src/images/bars.svg ***!
+  \*****************************/
+
+/*!******************************!*\
+  !*** ./src/data/menuData.js ***!
+  \******************************/
+
+/*!********************************!*\
+  !*** ./src/data/sliderData.js ***!
+  \********************************/
+
+/*!********************************!*\
+  !*** ./src/images/house-1.jpg ***!
+  \********************************/
+
+/*!********************************!*\
+  !*** ./src/images/house-2.jpg ***!
+  \********************************/
+
+/*!********************************!*\
+  !*** ./src/images/house-3.jpg ***!
+  \********************************/
+
+/*!********************************!*\
+  !*** ./src/images/house-4.jpg ***!
+  \********************************/
+
+/*!********************************!*\
+  !*** ./src/images/house-5.jpg ***!
+  \********************************/
+
+/*!*********************************!*\
+  !*** ./src/components/Hero.jsx ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./src/data/exploreData.js ***!
+  \*********************************/
+
+/*!**********************************!*\
+  !*** ./src/components/Button.js ***!
+  \**********************************/
+
+/*!***********************************!*\
+  !*** ./src/components/Navbar.jsx ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** ./src/images/interior-1.jpg ***!
+  \***********************************/
+
+/*!*************************************!*\
+  !*** ./node_modules/react/index.js ***!
+  \*************************************/
+
+/*!*************************************!*\
+  !*** ./src/components/Dropdown.jsx ***!
+  \*************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/isarray/index.js ***!
+  \***************************************/
+
+/*!****************************************!*\
+  !*** ./node_modules/react-is/index.js ***!
+  \****************************************/
+
+/*!****************************************!*\
+  !*** ./src/components/SectionView.jsx ***!
+  \****************************************/
+
+/*!*****************************************!*\
+  !*** ./node_modules/react-dom/index.js ***!
+  \*****************************************/
+
+/*!*****************************************!*\
+  !*** ./node_modules/scheduler/index.js ***!
+  \*****************************************/
+
+/*!*****************************************!*\
+  !*** ./node_modules/tslib/tslib.es6.js ***!
+  \*****************************************/
+
+/*!******************************************!*\
+  !*** ./node_modules/prop-types/index.js ***!
+  \******************************************/
+
+/*!*******************************************!*\
+  !*** ./node_modules/scheduler/tracing.js ***!
+  \*******************************************/
+
+/*!*******************************************!*\
+  !*** ./src/components/SectionExplore.jsx ***!
+  \*******************************************/
+
+/*!********************************************!*\
+  !*** ./node_modules/shallowequal/index.js ***!
+  \********************************************/
+
+/*!*********************************************!*\
+  !*** ./node_modules/history/esm/history.js ***!
+  \*********************************************/
+
+/*!*********************************************!*\
+  !*** ./node_modules/object-assign/index.js ***!
+  \*********************************************/
+
+/*!**********************************************!*\
+  !*** ./node_modules/path-to-regexp/index.js ***!
+  \**********************************************/
+
+/*!*************************************************!*\
+  !*** ./node_modules/framesync/dist/es/index.js ***!
+  \*************************************************/
+
+/*!**************************************************!*\
+  !*** ./node_modules/react-icons/fa/index.esm.js ***!
+  \**************************************************/
+
+/*!**************************************************!*\
+  !*** ./node_modules/react-icons/io/index.esm.js ***!
+  \**************************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/prop-types/checkPropTypes.js ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/react-icons/io5/index.esm.js ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/react-icons/lib/esm/index.js ***!
+  \***************************************************/
+
+/*!*****************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/utils/inc.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/utils/mix.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ./node_modules/react/cjs/react.development.js ***!
+  \*****************************************************/
+
+/*!*****************************************************!*\
+  !*** ./node_modules/value-equal/esm/value-equal.js ***!
+  \*****************************************************/
+
+/*!******************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/utils/pipe.js ***!
+  \******************************************************/
+
+/*!******************************************************!*\
+  !*** ./node_modules/react-icons/lib/esm/iconBase.js ***!
+  \******************************************************/
+
+/*!*******************************************************!*\
+  !*** ./node_modules/hey-listen/dist/hey-listen.es.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/utils/clamp.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ./node_modules/react-router/esm/react-router.js ***!
+  \*******************************************************/
+
+/*!********************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/easing/index.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/easing/utils.js ***!
+  \********************************************************/
+
+/*!*********************************************************!*\
+  !*** ./node_modules/framesync/dist/es/on-next-frame.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ./node_modules/react-icons/lib/esm/iconContext.js ***!
+  \*********************************************************/
+
+/*!*********************************************************!*\
+  !*** ./node_modules/style-value-types/dist/es/utils.js ***!
+  \*********************************************************/
+
+/*!**********************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/noop.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/utils/distance.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/utils/is-point.js ***!
+  \**********************************************************/
+
+/*!**********************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/utils/progress.js ***!
+  \**********************************************************/
+
+/*!***********************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/array.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/value/index.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/utils/mix-color.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ./node_modules/react-icons/lib/esm/iconsManifest.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ./node_modules/react-is/cjs/react-is.development.js ***!
+  \***********************************************************/
+
+/*!************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/extends.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/events/utils.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/index.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/index.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/animations/index.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ./node_modules/prop-types/factoryWithTypeCheckers.js ***!
+  \************************************************************/
+
+/*!************************************************************!*\
+  !*** ./node_modules/tiny-warning/dist/tiny-warning.esm.js ***!
+  \************************************************************/
+
+/*!*************************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/utils/interpolate.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/utils/is-point-3d.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/utils/mix-complex.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ./node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ./node_modules/react-dom/cjs/react-dom.development.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ./node_modules/scheduler/cjs/scheduler.development.js ***!
+  \*************************************************************/
+
+/*!*************************************************************!*\
+  !*** ./node_modules/style-value-types/dist/es/color/hex.js ***!
+  \*************************************************************/
+
+/*!**************************************************************!*\
+  !*** ./node_modules/framesync/dist/es/create-render-step.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/animations/inertia.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ./node_modules/style-value-types/dist/es/color/hsla.js ***!
+  \**************************************************************/
+
+/*!**************************************************************!*\
+  !*** ./node_modules/style-value-types/dist/es/color/rgba.js ***!
+  \**************************************************************/
+
+/*!***************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/each-axis.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/easing/cubic-bezier.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ./node_modules/react-router-dom/esm/react-router-dom.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ./node_modules/resolve-pathname/esm/resolve-pathname.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ./node_modules/style-value-types/dist/es/color/index.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ./node_modules/style-value-types/dist/es/color/utils.js ***!
+  \***************************************************************/
+
+/*!****************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/is-browser.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ./node_modules/tiny-invariant/dist/tiny-invariant.esm.js ***!
+  \****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ./node_modules/@emotion/stylis/dist/stylis.browser.esm.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/events/event-info.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/motion.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ./node_modules/style-value-types/dist/es/complex/index.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ./node_modules/style-value-types/dist/es/numbers/index.js ***!
+  \*****************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ./node_modules/style-value-types/dist/es/numbers/units.js ***!
+  \*****************************************************************/
+
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/utils/state.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/utils/types.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/use-constant.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ./node_modules/mini-create-react-context/dist/esm/index.js ***!
+  \******************************************************************/
+
+/*!******************************************************************!*\
+  !*** ./node_modules/style-value-types/dist/es/complex/filter.js ***!
+  \******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ./node_modules/@emotion/memoize/dist/memoize.browser.esm.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/context/LazyContext.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/gestures/PanSession.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/is-ref-object.js ***!
+  \*******************************************************************/
+
+/*!*******************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/resolve-value.js ***!
+  \*******************************************************************/
+
+/*!********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/events/use-dom-event.js ***!
+  \********************************************************************/
+
+/*!********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/features/drag.js ***!
+  \********************************************************************/
+
+/*!********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/svg/use-props.js ***!
+  \********************************************************************/
+
+/*!********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/utils/setters.js ***!
+  \********************************************************************/
+
+/*!********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/geometry/index.js ***!
+  \********************************************************************/
+
+/*!********************************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/animations/utils/elapsed.js ***!
+  \********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ./node_modules/@emotion/unitless/dist/unitless.browser.esm.js ***!
+  \*********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/use-render.js ***!
+  \*********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/html/use-props.js ***!
+  \*********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/svg/utils/path.js ***!
+  \*********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/utils/variants.js ***!
+  \*********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/shallow-compare.js ***!
+  \*********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/time-conversion.js ***!
+  \*********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/utils/velocity-per-second.js ***!
+  \*********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ./node_modules/scheduler/cjs/scheduler-tracing.development.js ***!
+  \*********************************************************************/
+
+/*!**********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/animation/utils/easing.js ***!
+  \**********************************************************************/
+
+/*!**********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/gestures/drag/use-drag.js ***!
+  \**********************************************************************/
+
+/*!**********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/utils/animation.js ***!
+  \**********************************************************************/
+
+/*!**********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/utils/flat-tree.js ***!
+  \**********************************************************************/
+
+/*!***********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/context/PresenceContext.js ***!
+  \***********************************************************************/
+
+/*!***********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/utils/valid-prop.js ***!
+  \***********************************************************************/
+
+/*!***********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/motion-proxy.js ***!
+  \***********************************************************************/
+
+/*!***********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/svg/utils/render.js ***!
+  \***********************************************************************/
+
+/*!***********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/utils/lifecycles.js ***!
+  \***********************************************************************/
+
+/*!***********************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/utils/projection.js ***!
+  \***********************************************************************/
+
+/*!***********************************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/animations/generators/decay.js ***!
+  \***********************************************************************/
+
+/*!************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/events/use-pointer-event.js ***!
+  \************************************************************************/
+
+/*!************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/gestures/drag/utils/lock.js ***!
+  \************************************************************************/
+
+/*!************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/gestures/use-pan-gesture.js ***!
+  \************************************************************************/
+
+/*!************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/gestures/use-tap-gesture.js ***!
+  \************************************************************************/
+
+/*!************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/features/gestures.js ***!
+  \************************************************************************/
+
+/*!************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/html/utils/render.js ***!
+  \************************************************************************/
+
+/*!************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/svg/config-motion.js ***!
+  \************************************************************************/
+
+/*!************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/use-unmount-effect.js ***!
+  \************************************************************************/
+
+/*!************************************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/animations/generators/spring.js ***!
+  \************************************************************************/
+
+/*!************************************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/animations/utils/find-spring.js ***!
+  \************************************************************************/
+
+/*!*************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/gestures/utils/event-type.js ***!
+  \*************************************************************************/
+
+/*!*************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/html/config-motion.js ***!
+  \*************************************************************************/
+
+/*!*************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/svg/visual-element.js ***!
+  \*************************************************************************/
+
+/*!*************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/utils/is-draggable.js ***!
+  \*************************************************************************/
+
+/*!*************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/geometry/delta-calc.js ***!
+  \*************************************************************************/
+
+/*!*************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/is-numerical-string.js ***!
+  \*************************************************************************/
+
+/*!**************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/context/LayoutGroupContext.js ***!
+  \**************************************************************************/
+
+/*!**************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/gestures/use-focus-gesture.js ***!
+  \**************************************************************************/
+
+/*!**************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/gestures/use-hover-gesture.js ***!
+  \**************************************************************************/
+
+/*!**************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/features/animations.js ***!
+  \**************************************************************************/
+
+/*!**************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/html/visual-element.js ***!
+  \**************************************************************************/
+
+/*!**************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/utils/motion-values.js ***!
+  \**************************************************************************/
+
+/*!**************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/geometry/delta-apply.js ***!
+  \**************************************************************************/
+
+/*!**************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/subscription-manager.js ***!
+  \**************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/animation/utils/transitions.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/context/MotionConfigContext.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/context/MotionContext/index.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/context/MotionContext/utils.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/context/SharedLayoutContext.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/features/definitions.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/utils/use-motion-ref.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/projection/utils.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/value-types/find.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/value-types/test.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/html/utils/transform.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/utils/use-isomorphic-effect.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/value/utils/is-motion-value.js ***!
+  \***************************************************************************/
+
+/*!***************************************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/animations/generators/keyframes.js ***!
+  \***************************************************************************/
+
+/*!****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/context/MotionContext/create.js ***!
+  \****************************************************************************/
+
+/*!****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/features/layout/index.js ***!
+  \****************************************************************************/
+
+/*!****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/features/layout/utils.js ***!
+  \****************************************************************************/
+
+/*!****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/features/use-features.js ***!
+  \****************************************************************************/
+
+/*!****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/svg/utils/build-attrs.js ***!
+  \****************************************************************************/
+
+/*!****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/utils/animation-state.js ***!
+  \****************************************************************************/
+
+/*!*****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/animation/utils/is-animatable.js ***!
+  \*****************************************************************************/
+
+/*!*****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/utils/use-visual-state.js ***!
+  \*****************************************************************************/
+
+/*!*****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/projection/measure.js ***!
+  \*****************************************************************************/
+
+/*!*****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/utils/batch-layout.js ***!
+  \*****************************************************************************/
+
+/*!*****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/utils/filter-props.js ***!
+  \*****************************************************************************/
+
+/*!*****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/value-types/number.js ***!
+  \*****************************************************************************/
+
+/*!*****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/svg/lowercase-elements.js ***!
+  \*****************************************************************************/
+
+/*!*****************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/utils/compare-by-depth.js ***!
+  \*****************************************************************************/
+
+/*!******************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/features/layout/Animate.js ***!
+  \******************************************************************************/
+
+/*!******************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/features/layout/Measure.js ***!
+  \******************************************************************************/
+
+/*!******************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/utils/camel-to-dash.js ***!
+  \******************************************************************************/
+
+/*!******************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/utils/create-config.js ***!
+  \******************************************************************************/
+
+/*!******************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/html/utils/build-styles.js ***!
+  \******************************************************************************/
+
+/*!******************************************************************************!*\
+  !*** ./node_modules/styled-components/dist/styled-components.browser.esm.js ***!
+  \******************************************************************************/
+
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js ***!
+  \*******************************************************************************/
+
+/*!*******************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/gestures/drag/utils/constraints.js ***!
+  \*******************************************************************************/
+
+/*!*******************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/gestures/utils/is-node-or-child.js ***!
+  \*******************************************************************************/
+
+/*!*******************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/utils/use-visual-element.js ***!
+  \*******************************************************************************/
+
+/*!*******************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/value-types/defaults.js ***!
+  \*******************************************************************************/
+
+/*!*******************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/value-types/type-int.js ***!
+  \*******************************************************************************/
+
+/*!********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/create-visual-element.js ***!
+  \********************************************************************************/
+
+/*!********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/utils/is-css-variable.js ***!
+  \********************************************************************************/
+
+/*!********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/utils/unit-conversion.js ***!
+  \********************************************************************************/
+
+/*!********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/value-types/type-auto.js ***!
+  \********************************************************************************/
+
+/*!********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/value/utils/resolve-motion-value.js ***!
+  \********************************************************************************/
+
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js ***!
+  \*********************************************************************************/
+
+/*!*********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/utils/is-svg-component.js ***!
+  \*********************************************************************************/
+
+/*!*********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/value-types/dimensions.js ***!
+  \*********************************************************************************/
+
+/*!*********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/html/utils/build-transform.js ***!
+  \*********************************************************************************/
+
+/*!*********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/svg/utils/camel-case-attrs.js ***!
+  \*********************************************************************************/
+
+/*!*********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/svg/utils/transform-origin.js ***!
+  \*********************************************************************************/
+
+/*!**********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/projection/relative-set.js ***!
+  \**********************************************************************************/
+
+/*!**********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/utils/parse-dom-variant.js ***!
+  \**********************************************************************************/
+
+/*!**********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/value-types/get-as-type.js ***!
+  \**********************************************************************************/
+
+/*!**********************************************************************************!*\
+  !*** ./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js ***!
+  \**********************************************************************************/
+
+/*!***********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/animation/utils/default-transitions.js ***!
+  \***********************************************************************************/
+
+/*!***********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/animation/utils/is-keyframes-target.js ***!
+  \***********************************************************************************/
+
+/*!***********************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/utils/is-forced-motion-value.js ***!
+  \***********************************************************************************/
+
+/*!************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/components/AnimateSharedLayout/types.js ***!
+  \************************************************************************************/
+
+/*!************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/svg/utils/create-render-state.js ***!
+  \************************************************************************************/
+
+/*!*************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/animation/utils/is-animation-controls.js ***!
+  \*************************************************************************************/
+
+/*!*************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/html/utils/create-render-state.js ***!
+  \*************************************************************************************/
+
+/*!*************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/svg/utils/scrape-motion-values.js ***!
+  \*************************************************************************************/
+
+/*!**************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/motion/utils/make-renderless-component.js ***!
+  \**************************************************************************************/
+
+/*!**************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/projection/scale-correction.js ***!
+  \**************************************************************************************/
+
+/*!**************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/value-types/animatable-none.js ***!
+  \**************************************************************************************/
+
+/*!**************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/html/utils/scrape-motion-values.js ***!
+  \**************************************************************************************/
+
+/*!***************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/components/AnimatePresence/use-presence.js ***!
+  \***************************************************************************************/
+
+/*!***************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/gestures/drag/VisualElementDragControls.js ***!
+  \***************************************************************************************/
+
+/*!*****************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/projection/convert-to-relative.js ***!
+  \*****************************************************************************************/
+
+/*!*****************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/utils/css-variables-conversion.js ***!
+  \*****************************************************************************************/
+
+/*!******************************************************************************************!*\
+  !*** ./node_modules/popmotion/dist/es/animations/utils/detect-animation-from-options.js ***!
+  \******************************************************************************************/
+
+/*!********************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/components/AnimateSharedLayout/utils/batcher.js ***!
+  \********************************************************************************************/
+
+/*!********************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/html/utils/build-projection-transform.js ***!
+  \********************************************************************************************/
+
+/*!**********************************************************************************************!*\
+  !*** ./node_modules/framer-motion/dist/es/render/dom/projection/default-scale-correctors.js ***!
+  \**********************************************************************************************/
+
+/**
+ * Checks if an event is supported in the current execution environment.
+ *
+ * NOTE: This will not work correctly for non-generic events such as `change`,
+ * `reset`, `load`, `error`, and `select`.
+ *
+ * Borrows from Modernizr.
+ *
+ * @param {string} eventNameSuffix Event name, e.g. "click".
+ * @return {boolean} True if the event is supported.
+ * @internal
+ * @license Modernizr 3.0.0pre (Custom Build) | MIT
+ */
+
+/** @license React v0.20.2
+ * scheduler-tracing.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v0.20.2
+ * scheduler.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v16.13.1
+ * react-is.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v17.0.2
+ * react-dom.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v17.0.2
+ * react.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
