@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import styled, { css } from "styled-components/macro";
+import React, { useState, useEffect, useRef } from 'react';
+import styled, { css } from 'styled-components';
 
-import { Button } from "./Button.js";
-import { IoMdArrowRoundForward } from "react-icons/io";
-import { IoArrowForward, IoArrowBack } from "react-icons/io5";
+import { IoMdArrowRoundForward } from 'react-icons/io';
+import { IoArrowForward, IoArrowBack } from 'react-icons/io5';
+
+import Button from './Button';
 
 const HeroSection = styled.section`
   height: 100vh;
@@ -39,7 +40,7 @@ const HeroSlider = styled.div`
   align-items: center;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     bottom: 0;
     left: 0;
@@ -48,14 +49,10 @@ const HeroSlider = styled.div`
     height: 100vh;
     overflow: hidden;
     opacity: 0.4;
-    background: linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.2) 0%,
-      rgba(0, 0, 0, 0.2) 50%,
-      rgba(0, 0, 0, 0.6) 100%
-    );
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.6) 100%);
   }
 `;
+
 const HeroImage = styled.img`
   position: absolute;
   top: 0;
@@ -64,6 +61,7 @@ const HeroImage = styled.img`
   height: 100vh;
   object-fit: cover;
 `;
+
 const HeroContent = styled.div`
   position: relative;
   z-index: 10;
@@ -87,9 +85,11 @@ const HeroContent = styled.div`
       text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
   }
 `;
+
 const Arrow = styled(IoMdArrowRoundForward)`
   margin-left: 0.5rem;
 `;
+
 const SliderButtons = styled.div`
   position: absolute;
   bottom: 50px;
@@ -97,6 +97,7 @@ const SliderButtons = styled.div`
   display: flex;
   z-index: 10;
 `;
+
 const arrowButtons = css`
   width: 50px;
   height: 50px;
@@ -114,25 +115,28 @@ const arrowButtons = css`
     transform: scale(1.05);
   }
 `;
+
 const PrevArrow = styled(IoArrowBack)`
   ${arrowButtons}
 `;
+
 const NextArrow = styled(IoArrowForward)`
   ${arrowButtons}
 `;
 
 const Hero = ({ slides }) => {
   const [curr, setCurr] = useState(0);
-  const length = slides.length;
+  const { length } = slides;
   const timeout = useRef(null);
 
   useEffect(() => {
     const nextSlide = () => {
-      setCurr((curr) => (curr === length - 1 ? 0 : curr + 1));
+      setCurr((current) => (current === length - 1 ? 0 : current + 1));
     };
 
     timeout.current = setTimeout(nextSlide, 3000);
 
+    // eslint-disable-next-line func-names
     return function () {
       if (timeout.current) {
         clearTimeout(timeout.current);
@@ -162,7 +166,7 @@ const Hero = ({ slides }) => {
     <HeroSection>
       <HeroWrapper>
         {slides.map((slide, index) => (
-          <HeroSlide key={index}>
+          <HeroSlide key={slide.title}>
             {index === curr && (
               <HeroSlider>
                 <HeroImage src={slide.image} alt={slide.alt} />

@@ -1,13 +1,14 @@
-import React from "react";
-import styled from "styled-components";
-import { menuData } from "../data/MenuData";
-import { Button } from "./Button";
-import { Link } from "react-router-dom";
-import { FaTimes } from "react-icons/fa";
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
+
+import Button from './Button';
+import menuData from '../data/menuData';
 
 const DropdownContainer = styled.div`
   position: fixed;
-  top: ${({ isOpen }) => (isOpen ? "0" : "-100%")};
+  top: ${({ isOpen }) => (isOpen ? '0' : '-100%')};
   left: 0;
   width: 100%;
   height: 100%;
@@ -15,7 +16,7 @@ const DropdownContainer = styled.div`
   align-items: center;
   background: #cd853f;
   transition: 0.3s ease-in-out;
-  opacity: ${({ isOpen }) => (isOpen ? "1" : "0")};
+  opacity: ${({ isOpen }) => (isOpen ? '1' : '0')};
   z-index: 999;
 `;
 
@@ -64,28 +65,26 @@ const BtnWrap = styled.div`
   justify-content: center;
 `;
 
-const Dropdown = ({ isOpen, toggle }) => {
-  return (
-    <DropdownContainer isOpen={isOpen} onClick={toggle}>
-      <Icon onClick={toggle}>
-        <CloseIcon />
-      </Icon>
-      <DropdownWrapper>
-        <DropdownMenu>
-          {menuData.map((item, index) => (
-            <DropdownLink to={item.link} key={index}>
-              {item.title}
-            </DropdownLink>
-          ))}
-        </DropdownMenu>
-        <BtnWrap>
-          <Button primary="true" round="true" big="true" to="./contact">
-            Contact Us
-          </Button>
-        </BtnWrap>
-      </DropdownWrapper>
-    </DropdownContainer>
-  );
-};
+const Dropdown = ({ isOpen, toggle }) => (
+  <DropdownContainer isOpen={isOpen} onClick={toggle}>
+    <Icon onClick={toggle}>
+      <CloseIcon />
+    </Icon>
+    <DropdownWrapper>
+      <DropdownMenu>
+        {menuData.map((item) => (
+          <DropdownLink to={item.link} key={item.title}>
+            {item.title}
+          </DropdownLink>
+        ))}
+      </DropdownMenu>
+      <BtnWrap>
+        <Button primary="true" round="true" big="true" to="./contact">
+          Contact Us
+        </Button>
+      </BtnWrap>
+    </DropdownWrapper>
+  </DropdownContainer>
+);
 
 export default Dropdown;

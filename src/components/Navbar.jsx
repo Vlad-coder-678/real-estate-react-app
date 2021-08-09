@@ -1,11 +1,11 @@
-import React from "react";
-import styled, { css } from "styled-components/macro";
+import React from 'react';
+import styled, { css } from 'styled-components';
+import { Link } from 'react-router-dom';
 
-import { Link } from "react-router-dom";
-import { menuData } from "../data/MenuData";
-import { Button } from "./Button";
+import menuData from '../data/menuData';
+import Button from './Button';
 
-import Bars from "../images/bars.svg";
+import Bars from '../images/bars.svg';
 // import { FaBars } from "react-icons/fa";
 
 const Nav = styled.nav`
@@ -16,12 +16,7 @@ const Nav = styled.nav`
   z-index: 100;
   position: fixed;
   width: 100%;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.6) 0%,
-    rgba(0, 0, 0, 0.3) 50%,
-    rgba(0, 0, 0, 0) 100%
-  );
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0) 100%);
 `;
 
 const NavLink = css`
@@ -88,23 +83,21 @@ const NavBtn = styled.div`
   }
 `;
 
-const Navbar = ({ toggle }) => {
-  return (
-    <Nav>
-      <Logo>ELIXR</Logo>
-      <MenuBars onClick={toggle} />
-      <NavMenu>
-        {menuData.map((item, index) => (
-          <NavMenuLinks to={item.link} key={index}>
-            {item.title}
-          </NavMenuLinks>
-        ))}
-      </NavMenu>
-      <NavBtn>
-        <Button to="/contact">Contact Us</Button>
-      </NavBtn>
-    </Nav>
-  );
-};
+const Navbar = ({ toggle }) => (
+  <Nav>
+    <Logo>ELIXR</Logo>
+    <MenuBars onClick={toggle} />
+    <NavMenu>
+      {menuData.map((item) => (
+        <NavMenuLinks to={item.link} key={item.title}>
+          {item.title}
+        </NavMenuLinks>
+      ))}
+    </NavMenu>
+    <NavBtn>
+      <Button to="/contact">Contact Us</Button>
+    </NavBtn>
+  </Nav>
+);
 
 export default Navbar;
