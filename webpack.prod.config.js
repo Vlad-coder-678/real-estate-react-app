@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
@@ -12,7 +11,7 @@ module.exports = {
     path: path.resolve(__dirname, './build'),
     filename: 'index.js',
     assetModuleFilename: 'images/[hash][ext][query]',
-    publicPath: '/',
+    publicPath: '',
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -39,9 +38,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new CopyWebpackPlugin({
-      patterns: [{ from: 'src/images', to: 'img' }],
-    }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
       minify: { collapseWhitespace: true },
